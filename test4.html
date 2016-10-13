@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	
+		<title>Test4</title>
+		<script type="text/javascript" charset="utf-8" src="jquery-3.1.1.min.js"></script>
+	</head>
+	<body>
+		<div id="ThreeBox" >
+			<select id="seclectBox" >
+				<option>请选择省份</option>
+			</select>
+			<select id="seclectBox1">
+				<option>请选择市或区</option>
+			</select>
+			<select id="seclectBox2">
+				<option>请选择县</option>
+			</select>
+		</div>
+		<script>
+			$(function(){
+				var option = "",
+					option1 = "",
+					option2 = "",
+					seclectBox = $("#seclectBox"),
+					seclectBox1 = $("#seclectBox1");
+					seclectBox2 = $("#seclectBox2");
+				$.getJSON("test4Data.json",function(data){
+					$.each(data,function(k,v){
+						option += "<option"+" value="+k+">"+v+"</option>";
+					});
+					seclectBox.append(option);
+				});
+				seclectBox.change(function(){
+					var _value = $(this).val();
+					if($("#seclectBox1").find("option").not(":first").length!=0){
+						$("#seclectBox1").find("option").not(":first").remove();
+					}
+					$.getJSON("test5Data.json",function(data){
+						$.each(data,function(k,v){
+							if(_value==k){
+								$.each(v,function(kk,vv){
+									option1 += "<option"+" value="+kk+">"+vv+"</option>";
+								});
+								seclectBox1.append(option1);
+								option1 = "";
+								return;
+							}
+						});
+					})
+				});
+				seclectBox1.change(function(){
+					var _value = $(this).val();
+					console.log(_value)
+					if($("#seclectBox2").find("option").not(":first").length!=0){
+						$("#seclectBox2").find("option").not(":first").remove();
+					}
+					$.getJSON("test6Data.json",function(data){
+						$.each(data,function(k,v){
+							if(_value==k){
+								$.each(v,function(kk,vv){
+									option2 += "<option"+" value="+kk+">"+vv+"</option>";
+								});
+								seclectBox2.append(option2);
+								option2 = "";
+								return;
+							}
+						});
+					})
+				});
+			});
+		</script>
+	</body>
+</html>
